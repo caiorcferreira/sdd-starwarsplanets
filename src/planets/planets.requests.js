@@ -19,8 +19,9 @@ export async function retryFetchPlanets(state, dispatch) {
 export async function fetchPlanets(state, dispatch) {
   try {
     dispatch(fetchPlanetsBegin());
-    const planetList = await planetListFromPagination();
+    const planetList = await getPlanetListFromApi();
     const planets = buildPlanetsFromList(planetList);
+    console.log(planets);
     dispatch(fetchPlanetsSucceded(planets));
   } catch (error) {
     dispatch(fetchPlanetsFailed(error));
@@ -29,29 +30,27 @@ export async function fetchPlanets(state, dispatch) {
 
 // var error = true;
 
-async function planetListFromPagination() {
-  const MAX_PAGE = 7;
-  let planetsResults = [];
-
-  // if (error) {
-  //   throw Error('BLA');
-  // }
-
-  for (let page = 1; page <= MAX_PAGE; page++) {
-    const { data } = await axios(createFetchPlanetsRequest(page));
-    const { results } = data;
-
-    planetsResults.push(results);
-  }
-
-  return [].concat.apply([], planetsResults);
+async function getPlanetListFromApi() {
+  const url='https://swapi.co/api/planets/';
+  
+  return await makePlanetListFromApiPagination(url, []);
 }
 
-export function createFetchPlanetsRequest(page=0) {
-  const requestUrl = `https://swapi.co/api/planets/${page > 0 ? `?page=${page}` : ''}`;
+async function makePlanetListFromApiPagination(nextUrl, list) {
+  if (nextUrl === null) {
+    return list;
+  }
+  
+  const { data } = await axios(createFetchPlanetsRequest(nextUrl));
+  const { results, next } = data;
+  
+  return makePlanetListFromApiPagination(next, [...list, ...results])
+}
+
+export function createFetchPlanetsRequest(url) {
   return {
     method: 'get',
-    url: requestUrl,
+    url,
     headers: {
       'Content-Type': 'application/json'
     }
