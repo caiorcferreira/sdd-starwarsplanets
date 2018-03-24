@@ -21,8 +21,8 @@ export const stateTypes = {
     name: 'FETCH_PLANETS_FAILED',
     availableActions: [actionTypes.RETRY_FETCH_PLANETS]
   },
-  FETCHED_PLANETS: {
-    name: 'FETCHED_PLANETS',
+  PLANETS_FETCHED: {
+    name: 'PLANETS_FETCHED',
     availableActions: [actionTypes.SELECT_PLANET]
   },
   SELECTED_PLANET: {
@@ -50,7 +50,7 @@ export default function(state = initialState, action = {}) {
     case actionTypes.FETCH_PLANETS_SUCCEDED:
       return { 
         ...state,
-        _stateType: stateTypes.FETCHED_PLANETS,
+        _stateType: stateTypes.PLANETS_FETCHED,
         planets: action.payload,
         loading: false,
         error: null, 

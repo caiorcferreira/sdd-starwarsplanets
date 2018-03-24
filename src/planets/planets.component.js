@@ -13,7 +13,7 @@ class SWPlanets extends Component {
         return (<p>Loading...</p>);
       case stateTypes.FETCH_PLANETS_FAILED:
         return (<ErrorSWPlanet onRetryFetchPlanets={props.onRetryFetchPlanets} />);
-      case stateTypes.FETCHED_PLANETS:
+      case stateTypes.PLANETS_FETCHED:
         return (<p>Loading...</p>);
       case stateTypes.SELECTED_PLANET:
         const selectedPlanet = props.planets.selectedPlanet;
