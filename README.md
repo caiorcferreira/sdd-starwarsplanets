@@ -1,5 +1,5 @@
 # State Driven Development
 
-**Prove of Concept**
+**Proof of Concept**
 
 This project was built with `create-react-app`.
